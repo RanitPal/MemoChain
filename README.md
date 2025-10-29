@@ -1,47 +1,47 @@
-# 🧠 MemoChain DApp by Celo
+# 🧠 MemoChain  
+### A Simple On-Chain Memory Card Matching Game (Built with Solidity)
 
-A simple beginner **Solidity smart contract** project — an **on-chain card matching memory game** built to help new developers understand smart contract development on Ethereum-compatible blockchains.  
-
----
-
-## 🎮 Project Description
-
-**MemoChain** is a straightforward implementation of a **memory card matching game**, written in Solidity and deployed on-chain.  
-The goal is to provide a fun, hands-on example for those learning smart contract logic, state variables, mappings, structs, and events — all through an interactive and gamified concept.  
-
-Each card in the game has a hidden pair, and players attempt to match cards by calling functions directly on the blockchain.  
-The logic runs **entirely on-chain**, demonstrating transparency and immutability in a playful way.
+![MemoChain Screenshot](./1c95af2b-3055-4f04-b4f4-211a6e00e3d5.png)
 
 ---
 
-## ⚙️ What It Does
+## 📝 Project Description
 
-- Initializes a simple deck of 8 cards (4 pairs).  
-- Lets a player start a game using the `startGame()` function.  
-- Players can try to match two cards with `matchCards(card1, card2)`.  
-- If a correct match is found, it updates the player's score on-chain.  
-- The game ends automatically when all pairs are matched.  
+**MemoChain** is a **beginner-level Solidity smart contract** built on the **Celo testnet (Celo-Sepolia)**.  
+The idea behind MemoChain is to create an **on-chain card matching memory game**, where players can flip and match pairs of cards stored directly on the blockchain.
+
+This project is meant to help newcomers to Solidity understand **smart contract basics**, **events**, and **state management** in a fun and interactive way.
+
+---
+
+## 🎮 What It Does
+
+- Initializes a small deck of cards (e.g., 8 cards → 4 pairs).  
+- Players can **start a new game**.  
+- They can **select two cards** to see if they match.  
+- When a match is found, it’s recorded **on-chain** and the player’s score increases.  
+- Once all pairs are matched, the game automatically **ends** and announces the **winner**.
 
 ---
 
 ## ✨ Features
 
-- 🔹 **Beginner-friendly Solidity codebase** — clean and easy to read.  
-- 🔹 **On-chain logic** — every match and score update happens transparently on the blockchain.  
-- 🔹 **Events** — emits `GameStarted`, `CardMatched`, and `GameEnded` for tracking game state.  
-- 🔹 **State tracking** — keeps track of matched cards, scores, and active games.  
-- 🔹 **Celo Testnet Deployment** — live and verifiable on Celo Sepolia Testnet.  
+✅ Beginner-friendly Solidity structure  
+✅ Game logic stored fully on-chain  
+✅ Emits events for each important action (`GameStarted`, `CardMatched`, `GameEnded`)  
+✅ Simple and easy-to-read code (great for learning)  
+✅ Deployed live on the **Celo Sepolia Testnet**
 
 ---
 
-## 🌍 Deployed Smart Contract
+## 🌐 Deployed Smart Contract
 
-**Network:** Celo Sepolia Testnet  
-**Contract Address:** [`0x9A9352316462253Af84202581c9bb66795657694`](https://celo-sepolia.blockscout.com/address/0x9A9352316462253Af84202581c9bb66795657694)  
+📜 **Network:** Celo Sepolia Testnet  
+🔗 **Contract Address:** [0x9A9352316462253Af84202581c9bb66795657694](https://celo-sepolia.blockscout.com/address/0x9A9352316462253Af84202581c9bb66795657694)
 
 ---
 
-## 🧩 Smart Contract Code
+## 💻 Smart Contract Code
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -49,6 +49,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title MemoChain - A Simple On-Chain Memory Card Matching Game
+ * @author 
  * @notice This is a beginner-level Solidity example of a card matching game
  * @dev Simplified logic: cards are represented as integers; players try to match pairs.
  */
@@ -58,10 +59,11 @@ contract MemoChain {
     uint8 public revealedPairs;
     bool public gameActive;
 
+    // Represent a card
     struct Card {
-        uint8 id;
-        uint8 pairId;
-        bool matched;
+        uint8 id;          // unique card ID
+        uint8 pairId;      // number indicating which cards are a pair
+        bool matched;      // true if already matched
     }
 
     Card[TOTAL_CARDS] public cards;
@@ -76,6 +78,7 @@ contract MemoChain {
         _initializeCards();
     }
 
+    /// @dev Randomly initialize card pairs (for demo, pseudo-random)
     function _initializeCards() internal {
         uint8[8] memory pairIds = [1,1,2,2,3,3,4,4];
         for (uint8 i = 0; i < TOTAL_CARDS; i++) {
@@ -83,6 +86,7 @@ contract MemoChain {
         }
     }
 
+    /// @notice Start a new game
     function startGame() external {
         require(!gameActive, "Game already active");
         revealedPairs = 0;
@@ -90,6 +94,7 @@ contract MemoChain {
         emit GameStarted(msg.sender);
     }
 
+    /// @notice Player attempts to match two cards
     function matchCards(uint8 card1, uint8 card2) external {
         require(gameActive, "Game not active");
         require(card1 < TOTAL_CARDS && card2 < TOTAL_CARDS, "Invalid card");
@@ -97,6 +102,7 @@ contract MemoChain {
         require(card1 != card2, "Can't match same card");
 
         if (cards[card1].pairId == cards[card2].pairId) {
+            // It's a match!
             cards[card1].matched = true;
             cards[card2].matched = true;
             playerScore[msg.sender] += 1;
@@ -104,6 +110,7 @@ contract MemoChain {
 
             emit CardMatched(msg.sender, card1, card2);
 
+            // End game if all pairs found
             if (revealedPairs == TOTAL_CARDS / 2) {
                 gameActive = false;
                 emit GameEnded(msg.sender, playerScore[msg.sender]);
@@ -111,6 +118,7 @@ contract MemoChain {
         }
     }
 
+    /// @notice View all cards (for demo/testing)
     function getAllCards() external view returns (Card[TOTAL_CARDS] memory) {
         return cards;
     }
