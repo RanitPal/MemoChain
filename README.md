@@ -1,4 +1,4 @@
-# 🧠 MemoChain
+# 🧠 MemoChain DApp by Celo
 
 A simple beginner **Solidity smart contract** project — an **on-chain card matching memory game** built to help new developers understand smart contract development on Ethereum-compatible blockchains.  
 
