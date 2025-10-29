@@ -1,4 +1,4 @@
-# 🧠 MemoChain DApp by Celo
+# 🧠 MemoChain DApp on Celo
 ### A Simple On-Chain Memory Card Matching Game (Built with Solidity)
 
 <img width="1917" height="931" alt="Screenshot 2025-10-29 150104" src="https://github.com/user-attachments/assets/663cad36-1901-460f-b153-adf289435803" />
