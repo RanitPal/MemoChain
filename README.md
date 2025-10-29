@@ -1,7 +1,8 @@
 # 🧠 MemoChain  
 ### A Simple On-Chain Memory Card Matching Game (Built with Solidity)
 
-![MemoChain Screenshot](./1c95af2b-3055-4f04-b4f4-211a6e00e3d5.png)
+<img width="1920" height="1080" alt="Screenshot (201)" src="https://github.com/user-attachments/assets/7229549d-1844-43ce-8507-d9c235416259" />
+
 
 ---
 
